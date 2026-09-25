@@ -43,9 +43,17 @@ This is a **3-person group**, so PCA and clustering are not required.
 └── README.md
 ```
 
+## Dataset amendment
+
+The teaching team clarified that **A2 must use only the original dataset downloaded directly from the Inside Airbnb website**. The cleaned/modified dataset supplied for Assignment 1 must **not** be used for A2.
+
+The team's A1 preprocessing logic can be reused where relevant, but it must be rerun on the original Inside Airbnb data. In particular, A1-derived cleaned price, amenity count, and numeric bathroom logic are kept in `src/a1_reuse.py`.
+
+See `A2_DATA_AMENDMENT.md` and `data/README.md` before adding data.
+
 ## Workflow
 
-1. Put the official subject copy of `listings.csv` into `data/`.
+1. Download the original Melbourne `listings.csv` directly from Inside Airbnb and place it in `data/`. Do **not** use the cleaned/modified A1 dataset.
 2. Run `01_preprocessing.ipynb` and agree on the final three preprocessing tasks.
 3. Export one stable processed dataset/schema for all later notebooks.
 4. Run `02_correlation.ipynb`.
