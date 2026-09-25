@@ -62,7 +62,10 @@ jobs:
           else
             git commit -m "Commit executed submission notebook [skip ci]"
             # The full-analysis workflow can update generated files in main
-            # concurrently. Rebase this generated-only commit before pushing.
+            # concurrently. The notebook also writes non-submission artifacts
+            # during validation; stash those ephemeral changes so Git permits
+            # the generated-notebook commit to rebase cleanly.
+            git stash push --include-untracked --message "validation artifacts" >/dev/null || true
             git pull --rebase origin main
             git push origin HEAD:main
           fi
