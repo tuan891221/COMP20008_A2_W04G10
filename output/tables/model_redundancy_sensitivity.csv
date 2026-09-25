@@ -1,0 +1,5 @@
+model,dropped_feature,retained_features,original_size_only_macro_f1,drop_one_macro_f1,macro_f1_change_vs_original
+KNN,accommodates,bedrooms | beds | bathrooms,0.7454641494002181,0.75893064289614,0.013466493495921883
+KNN,bedrooms,accommodates | beds | bathrooms,0.7454641494002181,0.7394895036408413,-0.005974645759376784
+DecisionTree,accommodates,bedrooms | beds | bathrooms,0.7579904116210194,0.7571522842439211,-0.0008381273770983189
+DecisionTree,bedrooms,accommodates | beds | bathrooms,0.7579904116210194,0.735944499951655,-0.022045911669364426

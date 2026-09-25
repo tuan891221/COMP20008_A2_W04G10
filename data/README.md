@@ -14,18 +14,18 @@ data/listings.csv
 
 If Inside Airbnb provides a compressed `listings.csv.gz`, decompress it to `listings.csv` before running the current notebooks.
 
-## Why the A1 CSV cannot be reused
+## Why the earlier cleaned CSV cannot be reused
 
-The A1 listings file supplied in the group's archive is a curated 29-column dataset. It is useful for reviewing the team's A1 code, but it is not an acceptable A2 input under the amendment.
+The earlier listings file supplied in the group's archive is a curated 29-column dataset. It is not an acceptable A2 input under the amendment.
 
-The A2 preprocessing notebook contains a schema guard that rejects that known A1 29-column schema.
+The A2 preprocessing notebook contains a schema guard that rejects that known 29-column schema.
 
-## What may be reused from A1
+## Required transformations
 
-The team's own A1 **code logic** may be reused and rerun on the original Inside Airbnb dataset. Reusable helpers are in:
+The specification requires price cleaning and a numeric bathroom variable derived from `bathrooms_text`. These transformations are rerun on the original Inside Airbnb dataset. Reusable helpers are in:
 
 ```text
-src/a1_reuse.py
+src/preprocessing.py
 ```
 
 This includes:
@@ -34,7 +34,7 @@ This includes:
 - deriving a numeric bathroom count from `bathrooms_text`;
 - optional bedroom extraction from description for diagnostics.
 
-Do not copy A1 output values, row counts, mismatch percentages, or processed CSVs into A2. Recompute everything from the original A2 source data.
+Do not copy earlier output values, row counts, mismatch percentages, or processed CSVs into A2. Recompute everything from the original A2 source data.
 
 ## Reproducibility
 

@@ -17,6 +17,7 @@ import json
 import shutil
 import ssl
 import urllib.request
+import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -83,12 +84,20 @@ def ensure_melbourne_listings(
     except ImportError:
         ssl_context = ssl.create_default_context()
 
-    with urllib.request.urlopen(
-        req,
-        timeout=180,
-        context=ssl_context,
-    ) as response, gz_path.open("wb") as out:
-        shutil.copyfileobj(response, out)
+    try:
+        with urllib.request.urlopen(
+            req,
+            timeout=180,
+            context=ssl_context,
+        ) as response, gz_path.open("wb") as out:
+            shutil.copyfileobj(response, out)
+    except (urllib.error.URLError, TimeoutError) as exc:
+        gz_path.unlink(missing_ok=True)
+        raise RuntimeError(
+            "Automatic download failed. Manually download the recorded "
+            "Melbourne 16 June 2026 Detailed Listings file, decompress it, "
+            f"and place it at {csv_path}."
+        ) from exc
 
     print("Decompressing to:", csv_path)
     with gzip.open(gz_path, "rb") as src, csv_path.open("wb") as dst:

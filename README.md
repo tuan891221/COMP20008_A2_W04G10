@@ -47,7 +47,7 @@ This is a **3-person group**, so PCA and clustering are not required.
 
 The teaching team clarified that **A2 must use only the original dataset downloaded directly from the Inside Airbnb website**. The cleaned/modified dataset supplied for Assignment 1 must **not** be used for A2.
 
-This rule prohibits reusing the A1 **dataset**, not every transformation. Section 3.3 of the specification explicitly identifies the numeric `bathrooms` variable derived from `bathrooms_text` by the A1 pipeline and describes `price` as cleaned per Assignment 1. This repository recomputes those variables inside the A2 workflow from the original Inside Airbnb download. Amenity parsing and indicators are A2 implementations and do not depend on an A1 data file.
+This rule prohibits reusing the earlier **dataset**, not the transformations expressly required by the specification. Section 3.3 identifies numeric `bathrooms` derived from `bathrooms_text` and describes `price` as cleaned using the earlier assignment's definition. This repository recomputes both variables inside the A2 workflow from the original Inside Airbnb download. Amenity parsing and indicators are A2 implementations and do not depend on an earlier processed file.
 
 See `A2_DATA_AMENDMENT.md` and `data/README.md` before adding data.
 
@@ -60,6 +60,8 @@ python scripts/download_melbourne_data.py
 ```
 
 The preprocessing notebook will also run this downloader automatically when `data/listings.csv` is absent.
+
+If the dated URL later becomes unavailable, manually download the **Melbourne — 16 June 2026 — Detailed Listings** `listings.csv.gz`, decompress it, and place it at `data/listings.csv`. The workflow verifies the decompressed file against the recorded SHA256 before analysis. The verified raw CSV is also included in this repository snapshot.
 
 ## Workflow
 

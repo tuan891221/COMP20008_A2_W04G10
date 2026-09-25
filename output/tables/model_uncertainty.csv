@@ -1,2 +1,2 @@
 bootstrap_mean_macro_f1,ci_lower_95,ci_upper_95,n_boot,model,feature_set
-0.7594872074633044,0.7404484327105417,0.7787395014285535,2000,DecisionTree,size_location_amenities
+0.7574328472585521,0.7378653284563869,0.7774505605767792,2000,DecisionTree,size_location_amenities

@@ -1,0 +1,5 @@
+method,applicable,interpretation_limit
+Pearson,True,All analysed columns are numeric; with binary high_price this is the point-biserial correlation. Sensitive to non-linearity and outliers.
+Spearman,True,Applicable to monotonic numeric relationships and less sensitive to outliers; ties are common in count and binary variables.
+Mutual Information,True,Applied after five-quantile discretisation of numeric variables; magnitude depends on binning and is not on the correlation scale.
+Normalised Mutual Information,True,Applied to the same discretised categories; useful for relative comparison but still sensitive to binning and ties.

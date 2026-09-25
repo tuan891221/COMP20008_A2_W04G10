@@ -24,6 +24,9 @@ Snapshot:
 
 The notebook automatically downloads the official source if data/listings.csv
 is not present. The repository also records source metadata and a SHA256 hash.
+If the dated URL is unavailable, manually download the Melbourne 16 June 2026
+Detailed Listings file, decompress it, and place it at data/listings.csv. The
+notebook verifies its SHA256 before use.
 
 Python environment
 ------------------
@@ -86,7 +89,7 @@ It also writes the processed handoff dataset to:
 Important
 ---------
 Do not replace the source with the cleaned/modified Assignment 1 dataset.
-The code contains guards against the known A1 teaching-data schema and
+The code contains guards against the known disallowed teaching-data schema and
 against a clearly non-Melbourne file.
 
 The report text is authored separately by the group in accordance with the

@@ -1,4 +1,4 @@
 task,before,after,rows_affected
-Numeric bathrooms,21 text categories,"14,471 numeric values",14471
-Distance from CBD,latitude + longitude as two coordinates,"one distance feature; median=4.02 km, max=80.00 km",14472
-Amenities engineering,"13,995 unique raw amenity strings",91 amenity-count values + 6 binary amenity indicators,14472
+Numeric bathrooms,"original numeric field missing 1,285 rows (8.88%)",parsed bathrooms_text missing 1 rows (0.01%),1284
+Distance from CBD,"14,472 valid latitude/longitude pairs in two columns","14,472 derived distances; median=4.02 km, IQR=1.14–13.31 km",14472
+Amenities engineering,"13,995 unique raw amenity strings",91 amenity-count values + 6 controlled binary indicators,14472

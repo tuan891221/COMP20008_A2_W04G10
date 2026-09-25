@@ -1,9 +1,8 @@
 """Preprocessing helpers for the original Inside Airbnb A2 source data.
 
-The A2 specification explicitly refers to the numeric ``bathrooms`` variable
-derived from ``bathrooms_text`` by the Assignment 1 pipeline and to price
-cleaned per Assignment 1.  These helpers reproduce those transformations on
-the original A2 download; they never load or depend on the A1 cleaned dataset.
+Every transformation in this module is rerun from the unmodified Melbourne
+Detailed Listings download.  The module never loads or depends on a cleaned
+dataset from an earlier assignment.
 """
 
 from __future__ import annotations
@@ -17,9 +16,9 @@ import numpy as np
 import pandas as pd
 
 
-# Exact schema observed in the cleaned/modified A1 listings file supplied
-# in the uploaded assignment1 archive. A2 must NOT use that dataset.
-A1_CURATED_COLUMNS = {
+# Exact schema of the disallowed 29-column teaching dataset.  The guard exists
+# only to prevent accidentally substituting that file for the original source.
+DISALLOWED_CURATED_COLUMNS = {
     "id", "name", "description", "host_id", "host_identity_verified",
     "host_is_superhost", "host_listings_count", "neighbourhood_cleansed",
     "latitude", "longitude", "property_type", "room_type", "accommodates",
@@ -32,24 +31,27 @@ A1_CURATED_COLUMNS = {
 
 
 def validate_a2_source(df: pd.DataFrame) -> None:
-    """Reject the known 29-column A1 curated dataset.
+    """Reject the known 29-column curated teaching dataset.
 
-    This is a guard against accidental reuse of the A1 teaching dataset.
+    This is a guard against accidental reuse of the prior teaching dataset.
     It is not intended to prove that any arbitrary file is an official
     Inside Airbnb download, so the download source/date must still be recorded.
     """
     columns = set(df.columns)
 
-    if len(df.columns) == len(A1_CURATED_COLUMNS) and columns == A1_CURATED_COLUMNS:
+    if (
+        len(df.columns) == len(DISALLOWED_CURATED_COLUMNS)
+        and columns == DISALLOWED_CURATED_COLUMNS
+    ):
         raise ValueError(
-            "This file matches the 29-column cleaned/modified A1 dataset. "
+            "This file matches the disallowed 29-column cleaned teaching dataset. "
             "A2 requires the original dataset downloaded directly from "
             "Inside Airbnb. Replace data/listings.csv with the original file."
         )
 
 
 def parse_price_value(value):
-    """Convert Inside Airbnb price strings using the team's A1 parsing rule."""
+    """Convert an Inside Airbnb currency string to a numeric nightly price."""
     if pd.isna(value):
         return np.nan
 
@@ -81,9 +83,8 @@ def add_clean_price(
 def parse_amenities(value) -> list[str]:
     """Parse the JSON-style amenities field into a Python list.
 
-    The A1 team used corrected parsing instead of splitting on commas.
-    JSON parsing is retained here, with a conservative fallback for malformed
-    rows so diagnostics can identify them instead of silently miscounting.
+    JSON parsing preserves amenities that contain commas.  A conservative CSV
+    fallback is used only for malformed rows so they can still be audited.
     """
     if pd.isna(value):
         return []
@@ -102,8 +103,7 @@ def parse_amenities(value) -> list[str]:
     except (json.JSONDecodeError, TypeError):
         pass
 
-    # Fallback adapted from another group member's A1 solution: strip the
-    # outer brackets and let csv.reader respect quoted commas.
+    # Strip outer brackets and let csv.reader respect quoted commas.
     inner = text
     if len(inner) >= 2 and inner[0] in "[{" and inner[-1] in "]}":
         inner = inner[1:-1]
@@ -152,10 +152,7 @@ _CONTROLLED_AMENITY_PATTERNS = {
         r"^free (?:(?:street|driveway) )?parking(?: (?:garage|lot))?"
         r"(?: on premises)?(?: -.*)?$"
     ),
-    "has_kitchen": re.compile(
-        r"^(?:kitchen|kitchenette|(?:(?:private|shared) )?outdoor kitchen"
-        r"(?: with .*)?)$"
-    ),
+    "has_dedicated_workspace": re.compile(r"^dedicated workspace$"),
     "has_washer": re.compile(r"^(?:(?:free|paid) )?washer(?: -.*)?$"),
     "has_dryer": re.compile(r"^(?:(?:free|paid) )?dryer(?: -.*)?$"),
 }
@@ -173,7 +170,7 @@ CONTROLLED_AMENITY_FEATURES = (
     "has_pool",
     "has_free_parking",
     "has_air_conditioning",
-    "has_kitchen",
+    "has_dedicated_workspace",
     "has_washer",
     "has_dryer",
 )
@@ -212,13 +209,13 @@ _BATH_NUMBER_RE = re.compile(
 
 
 def parse_bathrooms_text(value):
-    """Derive the A1-style numeric bathroom variable from bathrooms_text."""
+    """Derive the specification's numeric bathroom variable from source text."""
     if pd.isna(value):
         return np.nan
 
     text = str(value).strip()
 
-    # A1 treated Half-bath / Shared half-bath / Private half-bath as 0.5.
+    # Inside Airbnb uses these three labels for half-bathroom values.
     if "half-bath" in text.lower():
         return 0.5
 

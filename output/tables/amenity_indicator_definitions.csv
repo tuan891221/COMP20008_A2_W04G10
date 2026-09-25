@@ -1,0 +1,7 @@
+feature,matching_rule,scope_note
+has_free_parking,anchored controlled free-parking amenity names,"Includes advertised free street, driveway, garage, lot, and on-premises parking; indicates access, not ownership/exclusivity."
+has_dedicated_workspace,exact normalised name: dedicated workspace,Replaces near-constant kitchen with a more discriminating amenity.
+has_pool,"anchored pool names, optionally private/shared/indoor/outdoor","Excludes pool table, pool view, and whirlpool appliance names."
+has_washer,"anchored washer names, optionally free/paid",Excludes dishwasher and washer appliance descriptions.
+has_dryer,"anchored dryer names, optionally free/paid",Excludes hair dryer and washer-dryer appliance descriptions.
+has_air_conditioning,exact controlled air-conditioning names,"Includes central, portable, and window AC labels."
