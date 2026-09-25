@@ -9,6 +9,7 @@ Important:
 
 from __future__ import annotations
 
+import csv
 import json
 import re
 from typing import Iterable
@@ -49,18 +50,23 @@ def validate_a2_source(df: pd.DataFrame) -> None:
 
 
 def parse_price_value(value):
-    """Convert Inside Airbnb price strings such as '$1,250.00' to float."""
+    """Convert Inside Airbnb price strings using the team's A1 parsing rule."""
     if pd.isna(value):
         return np.nan
 
-    cleaned = str(value).replace("$", "").replace(",", "").strip()
-    if cleaned == "":
+    match = re.search(
+        r"^\s*\$?\s*(\d+(?:,\d{3})*)(?:\.(\d+))?\s*$",
+        str(value),
+    )
+    if not match:
         return np.nan
 
-    try:
-        return float(cleaned)
-    except ValueError:
-        return np.nan
+    integer_part = match.group(1).replace(",", "")
+    decimal_part = match.group(2)
+
+    if decimal_part:
+        return float(f"{integer_part}.{decimal_part}")
+    return float(integer_part)
 
 
 def add_clean_price(
@@ -97,8 +103,23 @@ def parse_amenities(value) -> list[str]:
     except (json.JSONDecodeError, TypeError):
         pass
 
-    # Fallback based on the quoted-string strategy used in one A1 solution.
-    return re.findall(r'"(?:[^"\\]|\\.)*"', text)
+    # Fallback adapted from another group member's A1 solution: strip the
+    # outer brackets and let csv.reader respect quoted commas.
+    inner = text
+    if len(inner) >= 2 and inner[0] in "[{" and inner[-1] in "]}":
+        inner = inner[1:-1]
+    if inner == "":
+        return []
+
+    try:
+        return [
+            item.strip()
+            for item in next(csv.reader([inner], skipinitialspace=True))
+            if item.strip() != ""
+        ]
+    except Exception:
+        # Last-resort conservative fallback.
+        return re.findall(r'"(?:[^"\\]|\\.)*"', text)
 
 
 def count_amenities_value(value) -> int:
