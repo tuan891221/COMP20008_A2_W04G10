@@ -1,0 +1,105 @@
+name: Run full A2 analysis
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "notebooks/**"
+      - "src/**"
+      - "requirements.txt"
+      - ".github/workflows/run-analysis.yml"
+  workflow_dispatch:
+
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install nbconvert ipykernel
+
+      - name: Download official Melbourne Inside Airbnb data
+        run: |
+          python scripts/download_melbourne_data.py
+          python - <<'PY'
+          import pandas as pd
+          df = pd.read_csv("data/listings.csv", low_memory=False)
+          print("Raw official Melbourne shape:", df.shape)
+          print("Median coordinates:", df["latitude"].median(), df["longitude"].median())
+          PY
+
+      - name: Execute preprocessing
+        run: |
+          mkdir -p output/executed
+          jupyter nbconvert --to notebook --execute notebooks/01_preprocessing.ipynb             --output 01_preprocessing.executed.ipynb --output-dir output/executed             --ExecutePreprocessor.timeout=900
+
+      - name: Execute correlation analysis
+        run: |
+          jupyter nbconvert --to notebook --execute notebooks/02_correlation.ipynb             --output 02_correlation.executed.ipynb --output-dir output/executed             --ExecutePreprocessor.timeout=900
+
+      - name: Execute supervised learning
+        run: |
+          jupyter nbconvert --to notebook --execute notebooks/03_modelling.ipynb             --output 03_modelling.executed.ipynb --output-dir output/executed             --ExecutePreprocessor.timeout=1800
+
+      - name: Execute feature selection
+        run: |
+          jupyter nbconvert --to notebook --execute notebooks/04_feature_selection.ipynb             --output 04_feature_selection.executed.ipynb --output-dir output/executed             --ExecutePreprocessor.timeout=900
+
+      - name: Print key result tables
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          import json
+
+          table_dir = Path("output/tables")
+          wanted = [
+              "preprocessing_candidates.csv",
+              "preprocessing_impact.csv",
+              "split_summary.csv",
+              "correlation_target_associations.csv",
+              "model_summary.csv",
+              "model_incremental_value.csv",
+              "model_uncertainty.csv",
+              "feature_selection_top3.csv",
+              "feature_selection_hard_case.csv",
+          ]
+          for name in wanted:
+              p = table_dir / name
+              print("\n" + "=" * 80)
+              print(name)
+              if p.exists():
+                  print(pd.read_csv(p).to_string(index=False))
+              else:
+                  print("MISSING")
+
+          meta = table_dir / "preprocessing_metadata.json"
+          print("\n" + "=" * 80)
+          print("preprocessing_metadata.json")
+          if meta.exists():
+              print(json.dumps(json.loads(meta.read_text()), indent=2))
+          PY
+
+      - name: Upload full analysis outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: a2-analysis-results
+          path: |
+            output/executed/
+            output/tables/
+            output/figures/
+            data/processed_listings.csv
+            data/SOURCE_METADATA.json
+          retention-days: 14
