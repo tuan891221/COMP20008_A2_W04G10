@@ -55,4 +55,5 @@ jobs:
           path: |
             output/01_preprocessing.executed.ipynb
             data/SOURCE_METADATA.json
+            data/listings.csv
           retention-days: 14
