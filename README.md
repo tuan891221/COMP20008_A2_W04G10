@@ -51,6 +51,16 @@ The team's A1 preprocessing logic can be reused where relevant, but it must be r
 
 See `A2_DATA_AMENDMENT.md` and `data/README.md` before adding data.
 
+## Official data download
+
+The current Inside Airbnb Melbourne detailed-listings snapshot on the download page is **16 June 2026**. Download it reproducibly with:
+
+```bash
+python scripts/download_melbourne_data.py
+```
+
+The preprocessing notebook will also run this downloader automatically when `data/listings.csv` is absent.
+
 ## Workflow
 
 1. Download the original Melbourne `listings.csv` directly from Inside Airbnb and place it in `data/`. Do **not** use the cleaned/modified A1 dataset.
