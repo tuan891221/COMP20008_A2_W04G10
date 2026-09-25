@@ -1,0 +1,54 @@
+name: Validate final submission notebook
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "submission/code.ipynb"
+      - "submission/README.txt"
+      - "src/**"
+      - "requirements.txt"
+      - ".github/workflows/validate-submission.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install nbconvert ipykernel
+
+      - name: Execute submission notebook from a clean checkout
+        run: |
+          mkdir -p output/submission-validation
+          jupyter nbconvert --to notebook --execute submission/code.ipynb             --output code.executed.ipynb             --output-dir output/submission-validation             --ExecutePreprocessor.timeout=2400
+
+      - name: Verify required generated outputs
+        run: |
+          test -f data/processed_listings.csv
+          test -f output/tables/correlation_results.csv
+          test -f output/tables/model_summary.csv
+          test -f output/tables/feature_selection_top3.csv
+          test -f output/tables/feature_selection_hard_case.csv
+          echo "Submission notebook reproduced required outputs."
+
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-submission-validation
+          path: |
+            output/submission-validation/code.executed.ipynb
+            output/tables/
+            output/figures/
+            data/SOURCE_METADATA.json
+          retention-days: 14
