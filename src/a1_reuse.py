@@ -174,3 +174,32 @@ def add_bedrooms_from_description(
     out = df.copy()
     out[target] = out[source].apply(extract_bedrooms_from_description_value)
     return out
+
+
+def validate_melbourne_source(df: pd.DataFrame) -> None:
+    """Reject a clearly non-Melbourne detailed listings file.
+
+    This does not replace recording the official Inside Airbnb source URL/date.
+    It catches accidental uploads from another city (for example Albany).
+    """
+    required = {"latitude", "longitude", "room_type", "price", "id"}
+    missing = required.difference(df.columns)
+    if missing:
+        raise ValueError(f"Detailed listings file is missing required columns: {sorted(missing)}")
+
+    lat = pd.to_numeric(df["latitude"], errors="coerce")
+    lon = pd.to_numeric(df["longitude"], errors="coerce")
+    if lat.notna().sum() == 0 or lon.notna().sum() == 0:
+        raise ValueError("Cannot validate city because latitude/longitude are empty.")
+
+    med_lat = float(lat.median())
+    med_lon = float(lon.median())
+
+    # Broad metro-Melbourne sanity bounds, intentionally wider than the CBD.
+    if not (-39.5 <= med_lat <= -36.5 and 143.0 <= med_lon <= 146.5):
+        raise ValueError(
+            "This file does not appear to be Melbourne data. "
+            f"Median coordinates are ({med_lat:.4f}, {med_lon:.4f}). "
+            "Use the Melbourne, Victoria, Australia detailed listings.csv.gz "
+            "from Inside Airbnb (16 June 2026 snapshot for this repository)."
+        )
