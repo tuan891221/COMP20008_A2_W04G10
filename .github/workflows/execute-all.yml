@@ -81,6 +81,10 @@ jobs:
             echo "No generated changes to commit."
           else
             git commit -m "Commit executed notebooks and analysis outputs [skip ci]"
+            # Another validation workflow may have updated main while this job
+            # was running. Rebase the generated-only commit before pushing so
+            # concurrent notebook validations do not create a false failure.
+            git pull --rebase origin main
             git push origin HEAD:main
           fi
 
