@@ -1,0 +1,72 @@
+name: Execute full A2 analysis
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "notebooks/**"
+      - "src/**"
+      - "scripts/**"
+      - "requirements.txt"
+      - ".github/workflows/execute-all.yml"
+  workflow_dispatch:
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install nbconvert ipykernel
+
+      - name: Download original Melbourne Inside Airbnb data
+        run: |
+          python scripts/download_melbourne_data.py
+          python - <<'PY'
+          import pandas as pd
+          df = pd.read_csv("data/listings.csv", low_memory=False)
+          print("Official raw shape:", df.shape)
+          print("Median coordinates:", df["latitude"].median(), df["longitude"].median())
+          PY
+
+      - name: Execute preprocessing
+        run: |
+          jupyter nbconvert --to notebook --execute notebooks/01_preprocessing.ipynb             --output 01_preprocessing.executed.ipynb --output-dir output             --ExecutePreprocessor.timeout=900
+
+      - name: Execute correlation
+        run: |
+          jupyter nbconvert --to notebook --execute notebooks/02_correlation.ipynb             --output 02_correlation.executed.ipynb --output-dir output             --ExecutePreprocessor.timeout=900
+
+      - name: Execute modelling
+        run: |
+          jupyter nbconvert --to notebook --execute notebooks/03_modelling.ipynb             --output 03_modelling.executed.ipynb --output-dir output             --ExecutePreprocessor.timeout=1800
+
+      - name: Execute feature selection
+        run: |
+          jupyter nbconvert --to notebook --execute notebooks/04_feature_selection.ipynb             --output 04_feature_selection.executed.ipynb --output-dir output             --ExecutePreprocessor.timeout=900
+
+      - name: List outputs
+        run: |
+          find output -maxdepth 2 -type f -print | sort
+          find data -maxdepth 1 -type f -print | sort
+
+      - name: Upload complete analysis artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: a2-full-analysis
+          path: |
+            output/
+            data/processed_listings.csv
+            data/split_assignments.csv
+            data/SOURCE_METADATA.json
+          retention-days: 14
