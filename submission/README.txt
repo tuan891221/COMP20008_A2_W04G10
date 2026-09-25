@@ -1,15 +1,77 @@
 COMP20008 Assignment 2 — W04G10
 ================================
 
-Final Canvas requirements from the assignment specification:
+Files to submit
+---------------
 - code.ipynb
 - README.txt
 
-Before copying files into this folder:
-1. Run the complete final notebook from a fresh kernel.
-2. Confirm all outputs used in the report are reproduced.
-3. Check all repeated counts/metrics against the report.
-4. Remove scratch cells and unused experiments.
-5. Keep enough comments for the implementation to be understandable.
+Research question
+-----------------
+Among Melbourne entire homes and apartments with valid nightly prices, do
+location and amenities improve high-price prediction beyond property size
+alone, and which attributes are most useful?
 
-This folder is intentionally not populated with a final report because the assignment rules prohibit GenAI-generated report content.
+Data source
+-----------
+This code uses the ORIGINAL Melbourne Detailed Listings dataset downloaded
+directly from Inside Airbnb, not the cleaned/modified Assignment 1 dataset.
+
+Snapshot:
+- Melbourne, Victoria, Australia
+- 16 June 2026
+- Detailed listings.csv.gz
+
+The notebook automatically downloads the official source if data/listings.csv
+is not present. The repository also records source metadata and a SHA256 hash.
+
+Python environment
+------------------
+Recommended: Python 3.11
+
+Install dependencies from the repository root:
+
+    pip install -r requirements.txt
+
+How to run
+----------
+From the repository root, start Jupyter and run:
+
+    submission/code.ipynb
+
+Run all cells from a fresh kernel, top to bottom.
+
+The notebook will:
+1. download/validate the original Melbourne Inside Airbnb data;
+2. construct the eligible Entire home/apt cohort with valid positive price;
+3. apply the three selected preprocessing tasks;
+4. define the training-sample-Q75 high-price target and train/test split;
+5. compute Pearson, Spearman, MI and NMI for all designed variable pairs;
+6. tune/evaluate KNN and Decision Tree with 5-fold stratified CV;
+7. compare size-only against size + location + amenities;
+8. evaluate a majority-class baseline and bootstrap uncertainty;
+9. apply embedded and filter feature selection;
+10. identify and export a hard-case listing.
+
+Generated outputs
+-----------------
+The notebook writes reproducible tables to:
+
+    output/tables/
+
+and figures to:
+
+    output/figures/
+
+It also writes the processed handoff dataset to:
+
+    data/processed_listings.csv
+
+Important
+---------
+Do not replace the source with the cleaned/modified Assignment 1 dataset.
+The code contains guards against the known A1 teaching-data schema and
+against a clearly non-Melbourne file.
+
+The report text is authored separately by the group in accordance with the
+subject's GenAI rules.
