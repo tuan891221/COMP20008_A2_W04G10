@@ -94,6 +94,8 @@ source .venv/bin/activate   # macOS/Linux
 pip install -r requirements.txt
 ```
 
+The committed notebook outputs were generated on **macOS/Darwin 27.0.0 arm64, Python 3.11.16** with the pinned package versions. KNN has unusually frequent exact-distance boundary ties in this dataset, so its final decimal places can depend on neighbour tie handling across operating systems/architectures. The recorded run uses stable ascending listing-ID order, brute-force search, and one thread. `output/tables/runtime_environment.csv`, `knn_tie_diagnostics.csv`, and `knn_order_sensitivity.csv` preserve the exact environment and measured sensitivity. The qualitative full-versus-size-only conclusion is unchanged by the order stress test.
+
 ## Suggested notebook ownership
 
 - Tuan Wei: `01_preprocessing.ipynb`

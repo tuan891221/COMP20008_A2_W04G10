@@ -44,6 +44,14 @@ The tested package versions are:
     ipykernel==6.31.0
     certifi==2026.5.20
 
+The committed outputs were generated on macOS/Darwin 27.0.0 arm64 with
+Python 3.11.16. KNN has frequent exact-distance boundary ties, so its final
+decimal places may vary across operating systems or architectures. The
+recorded run fixes training order to ascending listing ID and uses brute-force,
+single-thread neighbour search. See runtime_environment.csv,
+knn_tie_diagnostics.csv and knn_order_sensitivity.csv in output/tables/.
+The full-versus-size-only conclusion is unchanged by the order stress test.
+
 Install them directly with:
 
     python -m pip install pandas==2.3.3 numpy==2.3.5 scipy==1.16.3 scikit-learn==1.7.2 matplotlib==3.10.6 jupyter==1.1.1 nbconvert==7.16.6 ipykernel==6.31.0 certifi==2026.5.20

@@ -42,6 +42,25 @@ Official source snapshot: Melbourne, Victoria, Australia — 16 June 2026, Detai
 | has_washer | 13,333 | 13,029 | 304 | 0 |
 | has_dryer | 12,850 | 8,954 | 3,896 | 0 |
 
+### CBD-distance transformation impact
+
+The all-row correlation analysis is descriptive/exploratory and is not used for model selection.
+
+| Representation | Predictor | Pearson with high_price | Spearman with high_price |
+|---|---|---:|---:|
+| Before: raw coordinate | latitude | -0.023395 | -0.044620 |
+| Before: raw coordinate | longitude | 0.101116 | 0.087377 |
+| After: derived distance | distance_cbd_km | 0.151772 | 0.158402 |
+
+Post-hoc held-out ablation with the full model's hyperparameters held fixed:
+
+| Model | Macro-F1 change from adding distance | ROC-AUC change from adding distance |
+|---|---:|---:|
+| KNN | +0.010935 | +0.043682 |
+| Decision Tree | +0.009513 | +0.010080 |
+
+This ablation is an interpretation/sensitivity check, not a second model-selection step.
+
 ## Target-association values
 
 | Predictor | Pearson | Spearman | MI | NMI |
@@ -79,6 +98,8 @@ MI/NMI numeric variables use the notebook's quantile-discretisation implementati
 
 KNN uses stable listing-ID ordering and single-thread brute-force neighbour search. The size-only training set contains 867 unique feature combinations among 11,577 rows. At the selected `k=21, p=1`, 96.68% of held-out rows have an exact distance tie across the neighbour boundary; this is retained as a measured limitation rather than hidden.
 
+The recorded outputs were produced on macOS/Darwin 27.0.0 arm64 with Python 3.11.16. Reversing only the training-row order changes size-only KNN macro-F1 by -0.002585 and ROC-AUC by -0.002428, directly confirming tie sensitivity. It does not change the conclusion that the full feature set fails to improve KNN macro-F1.
+
 ### Uncertainty
 
 Decision Tree full-feature held-out macro-F1 bootstrap (2,000 resamples):
@@ -91,6 +112,13 @@ Paired bootstrap for full minus size-only held-out macro-F1 (2,000 paired resamp
 |---|---:|---:|---:|
 | KNN | -0.013266 | [-0.029556, 0.004003] | 0.0670 |
 | Decision Tree | -0.000488 | [-0.011464, 0.010865] | 0.4595 |
+
+Paired bootstrap for full minus size-only held-out ROC-AUC (2,000 paired resamples):
+
+| Model | Observed difference | 95% percentile CI | P(full > size) |
+|---|---:|---:|---:|
+| KNN | +0.001983 | [-0.013118, 0.016376] | 0.5980 |
+| Decision Tree | +0.017493 | [0.010455, 0.025160] | 1.0000 |
 
 ## Feature selection
 
@@ -109,6 +137,8 @@ Meaningful filter-over-embedded disagreement: `beds` (embedded rank 6, importanc
 | Listing ID | 6520432 |
 | Selection rule | Highest-confidence held-out Decision Tree misclassification |
 | Price | AUD 399.25 |
+| Training-Q75 threshold | AUD 385.15 |
+| Price margin above threshold | AUD 14.10 |
 | High-price target | 1 |
 | Predicted high-price class | 0 |
 | Predicted-class probability | 0.965924 |
@@ -123,4 +153,4 @@ Meaningful filter-over-embedded disagreement: `beds` (embedded rank 6, importanc
 
 ## Reproducibility status
 
-All four development notebooks were executed sequentially from fresh Python 3.11 kernels using the verified original Melbourne Inside Airbnb source. The final `code.ipynb` was also executed in an otherwise empty temporary directory containing only the notebook and verified raw input: all 38 code cells completed without errors and regenerated the full output set without `src/` or development-notebook dependencies. Independent Python 3.11 and Python 3.13 runs produced exactly equal model, incremental-value, and feature-ranking tables.
+All four development notebooks were executed sequentially from fresh Python 3.11 kernels using the verified original Melbourne Inside Airbnb source. The final `code.ipynb` was also executed in an otherwise empty temporary directory containing only the notebook and verified raw input: all 38 code cells completed without errors and regenerated the full output set without `src/` or development-notebook dependencies. Python 3.11 and Python 3.13 runs on the same macOS arm64 host produced exactly equal model, incremental-value, and feature-ranking tables; this same-host result is not claimed as proof of cross-operating-system equality.

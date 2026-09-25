@@ -1,0 +1,4 @@
+predictor,representation,n,pearson_with_high_price,spearman_with_high_price,analysis_scope
+latitude,before: raw coordinate,14472,-0.023395281441567977,-0.04461968335536101,"All eligible rows; exploratory association only, not model selection."
+longitude,before: raw coordinate,14472,0.10111593813898968,0.08737650251182019,"All eligible rows; exploratory association only, not model selection."
+distance_cbd_km,after: derived CBD distance,14472,0.1517724825079958,0.15840161043183126,"All eligible rows; exploratory association only, not model selection."
