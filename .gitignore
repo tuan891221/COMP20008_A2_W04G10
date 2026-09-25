@@ -203,10 +203,8 @@ cython_debug/
 # Temporary file for partial code execution
 tempCodeRunnerFile.py
 
-# Reproducible local analysis inputs/intermediates (downloaded/generated)
-data/listings.csv
+# Local download archive and scratch files
 data/listings.csv.gz
-data/processed_listings.csv
 work/
 
 # Ruff stuff:
