@@ -1,3 +1,3 @@
 model,analysis_role,with_distance_macro_f1,without_distance_macro_f1,macro_f1_change_from_adding_distance,with_distance_roc_auc,without_distance_roc_auc,roc_auc_change_from_adding_distance
-KNN,Post-hoc held-out ablation; fixed full-model hyperparameters.,0.7321980447808263,0.7212626349151962,0.01093540986563013,0.8177422248575523,0.7740605698929384,0.04368165496461396
+KNN,Post-hoc held-out ablation; fixed full-model hyperparameters.,0.7321980447808263,0.7209191346375947,0.011278910143231569,0.8176518828047263,0.7736896585070403,0.04396222429768604
 DecisionTree,Post-hoc held-out ablation; fixed full-model hyperparameters.,0.7575022086436602,0.7479896046821188,0.00951260396154141,0.8375204542042136,0.8274403169860873,0.010080137218126284

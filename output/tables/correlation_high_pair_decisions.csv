@@ -1,2 +1,2 @@
 var_a,var_b,pearson,spearman,n,analysis_role,downstream_decision
-accommodates,bedrooms,0.8777743557429214,0.8831909426863296,14102,Post-hoc held-out sensitivity analysis only; not used for model selection.,"Retain both in the prespecified size benchmark, then quantify held-out macro-F1 sensitivity after dropping each member of the pair."
+accommodates,bedrooms,0.8777743557429198,0.8831909426863296,14102,Post-hoc held-out sensitivity analysis only; not used for model selection.,"Retain both in the prespecified size benchmark, then quantify held-out macro-F1 sensitivity after dropping each member of the pair."

@@ -1,2 +1,2 @@
 operating_system,os_release,machine,python_version,numpy_version,pandas_version,scipy_version,scikit_learn_version,knn_training_order,knn_algorithm,knn_n_jobs
-Darwin,27.0.0,arm64,3.11.16,2.3.5,2.3.3,1.16.3,1.7.2,listing id ascending (stable),brute,1
+Linux,6.17.0-1022-azure,x86_64,3.11.16,2.3.5,2.3.3,1.16.3,1.7.2,listing id ascending (stable),brute,1

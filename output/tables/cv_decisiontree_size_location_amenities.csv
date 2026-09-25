@@ -1,6 +1,6 @@
 model,feature_set,param_model__max_depth,param_model__min_samples_leaf,params,mean_test_score,std_test_score,rank_test_score,mean_train_score,std_train_score
-DecisionTree,size_location_amenities,,1,"{'model__max_depth': None, 'model__min_samples_leaf': 1}",0.6890875038272919,0.013345769857124615,20,0.9990490354737585,0.00014700987751133725
-DecisionTree,size_location_amenities,,5,"{'model__max_depth': None, 'model__min_samples_leaf': 5}",0.7149479727150923,0.016366832305241212,19,0.8524843660561338,0.0035435791589851816
+DecisionTree,size_location_amenities,,1,"{'model__max_depth': None, 'model__min_samples_leaf': 1}",0.6907108379915299,0.014010650491624439,20,0.9990490354737585,0.00014700987751133725
+DecisionTree,size_location_amenities,,5,"{'model__max_depth': None, 'model__min_samples_leaf': 5}",0.7149043971009504,0.01686580696555714,19,0.8526319425528543,0.0035864747058129607
 DecisionTree,size_location_amenities,,15,"{'model__max_depth': None, 'model__min_samples_leaf': 15}",0.7342584584528548,0.011393913721232836,16,0.7899811698595889,0.005648911036499054
 DecisionTree,size_location_amenities,,30,"{'model__max_depth': None, 'model__min_samples_leaf': 30}",0.7399305986902986,0.016936909050275683,14,0.7706717088833439,0.003876606458018023
 DecisionTree,size_location_amenities,3,1,"{'model__max_depth': 3, 'model__min_samples_leaf': 1}",0.7524491737594704,0.010041847477439723,2,0.7557465186823175,0.008017537911520496
@@ -12,10 +12,10 @@ DecisionTree,size_location_amenities,5,5,"{'model__max_depth': 5, 'model__min_sa
 DecisionTree,size_location_amenities,5,15,"{'model__max_depth': 5, 'model__min_samples_leaf': 15}",0.7519364274870594,0.01160615211733579,8,0.7628015071474605,0.0059920291782466955
 DecisionTree,size_location_amenities,5,30,"{'model__max_depth': 5, 'model__min_samples_leaf': 30}",0.7538671169786371,0.009367516205445327,1,0.7630258656700505,0.005640388253989828
 DecisionTree,size_location_amenities,8,1,"{'model__max_depth': 8, 'model__min_samples_leaf': 1}",0.7443728649907062,0.012775276483730155,10,0.7872703755456512,0.00915689824879423
-DecisionTree,size_location_amenities,8,5,"{'model__max_depth': 8, 'model__min_samples_leaf': 5}",0.7452012257444991,0.011491105057480052,9,0.780667186585284,0.008400468127432314
+DecisionTree,size_location_amenities,8,5,"{'model__max_depth': 8, 'model__min_samples_leaf': 5}",0.7452915306467295,0.011544129980101825,9,0.7807289680602179,0.00845691109799651
 DecisionTree,size_location_amenities,8,15,"{'model__max_depth': 8, 'model__min_samples_leaf': 15}",0.7436010907349182,0.011732453457953781,12,0.7715109950692572,0.006756345122846577
 DecisionTree,size_location_amenities,8,30,"{'model__max_depth': 8, 'model__min_samples_leaf': 30}",0.7442151815196727,0.016487848501889765,11,0.7665805000288919,0.007235292995139821
 DecisionTree,size_location_amenities,12,1,"{'model__max_depth': 12, 'model__min_samples_leaf': 1}",0.7250294735102084,0.015975607484187113,18,0.8611017600835045,0.004999297987276866
-DecisionTree,size_location_amenities,12,5,"{'model__max_depth': 12, 'model__min_samples_leaf': 5}",0.7254793705030695,0.011491619289947358,17,0.8196112348401847,0.005002425809969725
+DecisionTree,size_location_amenities,12,5,"{'model__max_depth': 12, 'model__min_samples_leaf': 5}",0.725883997259467,0.011224140085412159,17,0.8197606352350479,0.005065171961266711
 DecisionTree,size_location_amenities,12,15,"{'model__max_depth': 12, 'model__min_samples_leaf': 15}",0.734566207837352,0.012042412124645848,15,0.7860532346172285,0.006733976879377319
 DecisionTree,size_location_amenities,12,30,"{'model__max_depth': 12, 'model__min_samples_leaf': 30}",0.7405823302037662,0.0168508625437294,13,0.7710597269293972,0.003950267581133568

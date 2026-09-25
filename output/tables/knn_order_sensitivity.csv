@@ -1,3 +1,3 @@
 feature_set,recorded_training_order,audit_training_order,recorded_macro_f1,reverse_order_macro_f1,macro_f1_difference_reverse_minus_recorded,recorded_roc_auc,reverse_order_roc_auc,roc_auc_difference_reverse_minus_recorded,analysis_role
-size_only,listing id ascending,listing id descending,0.7454641494002181,0.7428790880151817,-0.0025850613850364468,0.8157588350710394,0.8133310514542526,-0.0024277836167868605,Reproducibility stress test; not model selection.
-size_location_amenities,listing id ascending,listing id descending,0.7321980447808263,0.7321980447808263,0.0,0.8177422248575523,0.8177155039686882,-2.6720888864129044e-05,Reproducibility stress test; not model selection.
+size_only,listing id ascending,listing id descending,0.739680181659749,0.7428790880151817,0.003198906355432629,0.8133075116235867,0.8084258597127886,-0.004881651910798146,Reproducibility stress test; not model selection.
+size_location_amenities,listing id ascending,listing id descending,0.7321980447808263,0.7321980447808263,0.0,0.8176518828047263,0.8176054393550342,-4.6443449692179506e-05,Reproducibility stress test; not model selection.

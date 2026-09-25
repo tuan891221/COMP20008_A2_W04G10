@@ -56,7 +56,7 @@ Post-hoc held-out ablation with the full model's hyperparameters held fixed:
 
 | Model | Macro-F1 change from adding distance | ROC-AUC change from adding distance |
 |---|---:|---:|
-| KNN | +0.010935 | +0.043682 |
+| KNN | +0.011279 | +0.043962 |
 | Decision Tree | +0.009513 | +0.010080 |
 
 This ablation is an interpretation/sensitivity check, not a second model-selection step.
@@ -77,8 +77,8 @@ MI/NMI numeric variables use the notebook's quantile-discretisation implementati
 
 | Model | Feature set | Accuracy | Macro-F1 | ROC-AUC | CV Macro-F1 | Class-1 F1 |
 |---|---|---:|---:|---:|---:|---:|
-| KNN | size only | 0.821762 | 0.745464 | 0.815759 | 0.746307 | 0.606107 |
-| KNN | size + location + amenities | 0.817617 | 0.732198 | 0.817742 | 0.743824 | 0.580952 |
+| KNN | size only | 0.816926 | 0.739680 | 0.813308 | 0.746125 | 0.597876 |
+| KNN | size + location + amenities | 0.817617 | 0.732198 | 0.817652 | 0.743824 | 0.580952 |
 | Decision Tree | size only | 0.824180 | 0.757990 | 0.820028 | 0.754895 | 0.631427 |
 | Decision Tree | size + location + amenities | 0.830743 | 0.757502 | 0.837520 | 0.753867 | 0.624233 |
 
@@ -86,7 +86,7 @@ MI/NMI numeric variables use the notebook's quantile-discretisation implementati
 
 | Model | Macro-F1 change | Accuracy change | ROC-AUC change |
 |---|---:|---:|---:|
-| KNN | -0.013266 | -0.004145 | +0.001983 |
+| KNN | -0.007482 | +0.000691 | +0.004344 |
 | Decision Tree | -0.000488 | +0.006563 | +0.017493 |
 
 ### Selected hyperparameters
@@ -98,7 +98,7 @@ MI/NMI numeric variables use the notebook's quantile-discretisation implementati
 
 KNN uses stable listing-ID ordering and single-thread brute-force neighbour search. The size-only training set contains 867 unique feature combinations among 11,577 rows. At the selected `k=21, p=1`, 96.68% of held-out rows have an exact distance tie across the neighbour boundary; this is retained as a measured limitation rather than hidden.
 
-The recorded outputs were produced on macOS/Darwin 27.0.0 arm64 with Python 3.11.16. Reversing only the training-row order changes size-only KNN macro-F1 by -0.002585 and ROC-AUC by -0.002428, directly confirming tie sensitivity. It does not change the conclusion that the full feature set fails to improve KNN macro-F1.
+The canonical outputs were produced by GitHub Actions on Linux x86_64 with Python 3.11.16. Reversing only the training-row order changes size-only KNN macro-F1 by +0.003199 and ROC-AUC by -0.004882, directly confirming tie sensitivity. It does not change the conclusion that the full feature set fails to improve KNN macro-F1.
 
 ### Uncertainty
 
@@ -110,14 +110,14 @@ Paired bootstrap for full minus size-only held-out macro-F1 (2,000 paired resamp
 
 | Model | Observed difference | 95% percentile CI | P(full > size) |
 |---|---:|---:|---:|
-| KNN | -0.013266 | [-0.029556, 0.004003] | 0.0670 |
+| KNN | -0.007482 | [-0.023638, 0.010606] | 0.2010 |
 | Decision Tree | -0.000488 | [-0.011464, 0.010865] | 0.4595 |
 
 Paired bootstrap for full minus size-only held-out ROC-AUC (2,000 paired resamples):
 
 | Model | Observed difference | 95% percentile CI | P(full > size) |
 |---|---:|---:|---:|
-| KNN | +0.001983 | [-0.013118, 0.016376] | 0.5980 |
+| KNN | +0.004344 | [-0.011125, 0.018990] | 0.7065 |
 | Decision Tree | +0.017493 | [0.010455, 0.025160] | 1.0000 |
 
 ## Feature selection
@@ -153,4 +153,4 @@ Meaningful filter-over-embedded disagreement: `beds` (embedded rank 6, importanc
 
 ## Reproducibility status
 
-All four development notebooks were executed sequentially from fresh Python 3.11 kernels using the verified original Melbourne Inside Airbnb source. The final `code.ipynb` was also executed in an otherwise empty temporary directory containing only the notebook and verified raw input: all 38 code cells completed without errors and regenerated the full output set without `src/` or development-notebook dependencies. Python 3.11 and Python 3.13 runs on the same macOS arm64 host produced exactly equal model, incremental-value, and feature-ranking tables; this same-host result is not claimed as proof of cross-operating-system equality.
+All four development notebooks were executed sequentially by GitHub Actions on Linux x86_64 with fresh Python 3.11.16 kernels and the verified original Melbourne Inside Airbnb source. The standalone final `code.ipynb` was independently executed from a clean checkout on the same pinned Linux environment: all 38 code cells completed without errors and regenerated the required outputs without `src/` or development-notebook dependencies. A separate local macOS run also completed, but the Linux tables above are canonical because KNN's exact-distance ties cause small cross-platform differences.
