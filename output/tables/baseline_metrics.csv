@@ -1,0 +1,2 @@
+model,feature_set,accuracy,macro_f1,precision_class_0,recall_class_0,f1_class_0,support_class_0,precision_class_1,recall_class_1,f1_class_1,support_class_1,roc_auc
+MajorityClassBaseline,none,0.7499136442141624,0.42854322937228584,0.7499136442141624,1.0,0.8570864587445717,2171,0.0,0.0,0.0,724,0.5

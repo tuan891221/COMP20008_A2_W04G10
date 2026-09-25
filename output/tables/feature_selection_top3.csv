@@ -1,0 +1,4 @@
+embedded_feature,embedded_score,filter_feature,filter_score
+bedrooms,0.7792578320809017,bedrooms,0.13887697133067411
+distance_cbd_km,0.07148583450275983,accommodates,0.12196618120827529
+bathrooms,0.0595243104360871,bathrooms,0.10757714532198759

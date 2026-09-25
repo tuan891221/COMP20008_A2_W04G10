@@ -1,0 +1,2 @@
+id,hard_case_feature,used_1_5_iqr_outlier_rule,feature_q1,feature_q3,feature_iqr,lower_bound,upper_bound,feature_median,split,high_price,price_clean,accommodates,bedrooms,beds,bathrooms,distance_cbd_km,amenity_count,has_pool,has_free_parking,has_air_conditioning,has_kitchen,has_washer,has_dryer
+1565029172672121402,bedrooms,True,1.0,3.0,2.0,-2.0,6.0,2.0,train,1,1384.0,16,12.0,26.0,12.0,14.339282930067366,19,0,1,1,1,1,0

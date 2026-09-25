@@ -1,0 +1,12 @@
+{
+  "city": "Melbourne",
+  "region": "Victoria",
+  "country": "Australia",
+  "snapshot_date": "2026-06-16",
+  "source_type": "Inside Airbnb Detailed Listings",
+  "source_url": "https://data.insideairbnb.com/australia/vic/melbourne/2026-06-16/data/listings.csv.gz",
+  "downloaded_at_utc": "2026-09-25T10:19:02.922302+00:00",
+  "csv_sha256": "526fc94588b7b0656fc147b0a87694267e72878c4f37fc0fb920b6478c524a06",
+  "csv_bytes": 69671722,
+  "gz_bytes": 15270041
+}

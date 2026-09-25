@@ -1,0 +1,27 @@
+{
+  "source_url": "https://data.insideairbnb.com/australia/vic/melbourne/2026-06-16/data/listings.csv.gz",
+  "raw_rows": 25728,
+  "entire_home_rows": 18829,
+  "eligible_rows": 14472,
+  "training_price_q75": 385.15,
+  "train_rows": 11577,
+  "test_rows": 2895,
+  "size_features": [
+    "accommodates",
+    "bedrooms",
+    "beds",
+    "bathrooms"
+  ],
+  "location_features": [
+    "distance_cbd_km"
+  ],
+  "amenity_features": [
+    "amenity_count",
+    "has_pool",
+    "has_free_parking",
+    "has_air_conditioning",
+    "has_kitchen",
+    "has_washer",
+    "has_dryer"
+  ]
+}
