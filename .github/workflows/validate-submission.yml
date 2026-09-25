@@ -11,12 +11,18 @@ on:
       - ".github/workflows/validate-submission.yml"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -41,6 +47,22 @@ jobs:
           test -f output/tables/feature_selection_top3.csv
           test -f output/tables/feature_selection_hard_case.csv
           echo "Submission notebook reproduced required outputs."
+
+      - name: Replace submission notebook with executed copy
+        run: |
+          cp output/submission-validation/code.executed.ipynb submission/code.ipynb
+
+      - name: Commit executed submission notebook
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add submission/code.ipynb
+          if git diff --cached --quiet; then
+            echo "No executed-notebook change to commit."
+          else
+            git commit -m "Commit executed submission notebook [skip ci]"
+            git push origin HEAD:main
+          fi
 
       - name: Upload validation artifact
         uses: actions/upload-artifact@v4
