@@ -15,6 +15,7 @@ import gzip
 import hashlib
 import json
 import shutil
+import ssl
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -23,6 +24,9 @@ MELBOURNE_SNAPSHOT_DATE = "2026-06-16"
 MELBOURNE_LISTINGS_GZ_URL = (
     "https://data.insideairbnb.com/australia/vic/melbourne/"
     "2026-06-16/data/listings.csv.gz"
+)
+MELBOURNE_LISTINGS_CSV_SHA256 = (
+    "526fc94588b7b0656fc147b0a87694267e72878c4f37fc0fb920b6478c524a06"
 )
 
 
@@ -56,6 +60,13 @@ def ensure_melbourne_listings(
     csv_path.parent.mkdir(parents=True, exist_ok=True)
 
     if csv_path.exists() and not force:
+        actual_sha256 = _sha256(csv_path)
+        if actual_sha256 != MELBOURNE_LISTINGS_CSV_SHA256:
+            raise ValueError(
+                "Existing data/listings.csv is not the recorded Melbourne "
+                "16 June 2026 source. Remove it and rerun to download the "
+                f"official snapshot. SHA256={actual_sha256}"
+            )
         return csv_path
 
     gz_path = csv_path.with_suffix(csv_path.suffix + ".gz")
@@ -65,7 +76,18 @@ def ensure_melbourne_listings(
     )
 
     print(f"Downloading original Inside Airbnb data:\n{MELBOURNE_LISTINGS_GZ_URL}")
-    with urllib.request.urlopen(req, timeout=180) as response, gz_path.open("wb") as out:
+    try:
+        import certifi
+
+        ssl_context = ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        ssl_context = ssl.create_default_context()
+
+    with urllib.request.urlopen(
+        req,
+        timeout=180,
+        context=ssl_context,
+    ) as response, gz_path.open("wb") as out:
         shutil.copyfileobj(response, out)
 
     print("Decompressing to:", csv_path)
@@ -84,6 +106,11 @@ def ensure_melbourne_listings(
         "csv_bytes": csv_path.stat().st_size,
         "gz_bytes": gz_path.stat().st_size,
     }
+    if metadata["csv_sha256"] != MELBOURNE_LISTINGS_CSV_SHA256:
+        raise ValueError(
+            "Downloaded CSV checksum does not match the recorded official "
+            "Melbourne 16 June 2026 snapshot."
+        )
     metadata_path = csv_path.parent / "SOURCE_METADATA.json"
     metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 

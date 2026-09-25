@@ -1,10 +1,9 @@
-"""
-Reusable preprocessing logic adapted from W04G10 members' COMP20008 A1 code.
+"""Preprocessing helpers for the original Inside Airbnb A2 source data.
 
-Important:
-- This module reuses the team's code logic, not the A1 processed dataset.
-- For A2, run these functions on the ORIGINAL Melbourne data downloaded
-  directly from Inside Airbnb.
+The A2 specification explicitly refers to the numeric ``bathrooms`` variable
+derived from ``bathrooms_text`` by the Assignment 1 pipeline and to price
+cleaned per Assignment 1.  These helpers reproduce those transformations on
+the original A2 download; they never load or depend on the A1 cleaned dataset.
 """
 
 from __future__ import annotations
@@ -133,6 +132,76 @@ def add_amenity_count(
 ) -> pd.DataFrame:
     out = df.copy()
     out[target] = out[source].apply(count_amenities_value)
+    return out
+
+
+def _normalise_amenity_name(value) -> str:
+    """Normalise one parsed amenity name without collapsing distinct names."""
+    text = str(value).strip().casefold()
+    text = text.replace("\xa0", " ").replace("–", "-").replace("—", "-")
+    return re.sub(r"\s+", " ", text)
+
+
+# Match complete parsed amenity names.  Anchoring prevents false positives such
+# as Hair dryer, Dishwasher, Pool table, Pool view, and Whirlpool appliances.
+_CONTROLLED_AMENITY_PATTERNS = {
+    "has_pool": re.compile(
+        r"^(?:(?:private|shared) )?(?:(?:indoor|outdoor) )?pool(?: -.*)?$"
+    ),
+    "has_free_parking": re.compile(
+        r"^free (?:(?:street|driveway) )?parking(?: (?:garage|lot))?"
+        r"(?: on premises)?(?: -.*)?$"
+    ),
+    "has_kitchen": re.compile(
+        r"^(?:kitchen|kitchenette|(?:(?:private|shared) )?outdoor kitchen"
+        r"(?: with .*)?)$"
+    ),
+    "has_washer": re.compile(r"^(?:(?:free|paid) )?washer(?: -.*)?$"),
+    "has_dryer": re.compile(r"^(?:(?:free|paid) )?dryer(?: -.*)?$"),
+}
+
+_CONTROLLED_AMENITY_NAMES = {
+    "has_air_conditioning": {
+        "air conditioning",
+        "central air conditioning",
+        "portable air conditioning",
+        "window ac unit",
+    },
+}
+
+CONTROLLED_AMENITY_FEATURES = (
+    "has_pool",
+    "has_free_parking",
+    "has_air_conditioning",
+    "has_kitchen",
+    "has_washer",
+    "has_dryer",
+)
+
+
+def amenity_indicator(items: Iterable[str], feature: str) -> int:
+    """Return 1 when parsed amenities contain the controlled feature name."""
+    names = {_normalise_amenity_name(item) for item in items}
+
+    if feature in _CONTROLLED_AMENITY_NAMES:
+        return int(bool(names & _CONTROLLED_AMENITY_NAMES[feature]))
+
+    pattern = _CONTROLLED_AMENITY_PATTERNS.get(feature)
+    if pattern is None:
+        raise KeyError(f"Unknown controlled amenity feature: {feature}")
+    return int(any(pattern.fullmatch(name) for name in names))
+
+
+def add_amenity_indicators(
+    df: pd.DataFrame,
+    source: str = "amenities_list",
+) -> pd.DataFrame:
+    """Add controlled amenity indicators from a parsed amenity-list column."""
+    out = df.copy()
+    for feature in CONTROLLED_AMENITY_FEATURES:
+        out[feature] = out[source].apply(
+            lambda items, selected=feature: amenity_indicator(items, selected)
+        )
     return out
 
 

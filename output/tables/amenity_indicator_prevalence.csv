@@ -1,7 +1,7 @@
 feature,n_yes,pct_yes
-has_pool,4610,31.85
-has_free_parking,7777,53.74
+has_pool,4465,30.85
+has_free_parking,9643,66.63
 has_air_conditioning,11455,79.15
 has_kitchen,14095,97.39
-has_washer,13333,92.13
-has_dryer,12850,88.79
+has_washer,13029,90.03
+has_dryer,8954,61.87

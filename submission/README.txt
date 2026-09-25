@@ -29,17 +29,33 @@ Python environment
 ------------------
 Recommended: Python 3.11
 
-Install dependencies from the repository root:
+The tested package versions are:
 
-    pip install -r requirements.txt
+    pandas==2.3.3
+    numpy==2.3.5
+    scipy==1.16.3
+    scikit-learn==1.7.2
+    matplotlib==3.10.6
+    jupyter==1.1.1
+    nbconvert==7.16.6
+    ipykernel==6.31.0
+    certifi==2026.5.20
+
+Install them directly with:
+
+    python -m pip install pandas==2.3.3 numpy==2.3.5 scipy==1.16.3 scikit-learn==1.7.2 matplotlib==3.10.6 jupyter==1.1.1 nbconvert==7.16.6 ipykernel==6.31.0 certifi==2026.5.20
 
 How to run
 ----------
-From the repository root, start Jupyter and run:
+Place code.ipynb in a writable directory, start Jupyter there, and open:
 
     submission/code.ipynb
 
 Run all cells from a fresh kernel, top to bottom.
+
+The submitted notebook is self-contained: it does not import repository-local
+src modules and does not require any development notebook or pre-generated
+processed dataset. It creates data/ and output/ beneath the working directory.
 
 The notebook will:
 1. download/validate the original Melbourne Inside Airbnb data;

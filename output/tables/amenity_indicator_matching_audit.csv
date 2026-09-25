@@ -1,0 +1,7 @@
+feature,legacy_substring_n,controlled_n,legacy_only_false_positive_n,controlled_only_new_match_n
+has_pool,4610,4465,145,0
+has_free_parking,7777,9643,0,1866
+has_air_conditioning,11455,11455,0,0
+has_kitchen,14095,14095,0,0
+has_washer,13333,13029,304,0
+has_dryer,12850,8954,3896,0

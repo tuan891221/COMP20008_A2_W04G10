@@ -18,18 +18,19 @@ For A2:
 3. recompute all counts, percentages, correlations, thresholds, model scores and feature rankings from the A2 source data;
 4. keep the raw A2 input unchanged and derive processed outputs reproducibly.
 
-## A1 code that is relevant to A2
+## Exact scope of the Assignment 1 references
 
-The uploaded A1 code contains:
-- corrected price parsing;
-- corrected amenity counting;
-- bedroom extraction from description;
-- bathroom extraction from `bathrooms_text` and description;
-- diagnostic comparisons.
+The amendment prohibits the cleaned/modified A1 **dataset**. It does not say that
+all transformations previously used in A1 are forbidden.
 
-For the current A2 research question, the most directly reusable pieces are:
-- cleaned nightly price;
-- amenity count;
-- numeric bathrooms from `bathrooms_text`.
+The current A2 specification is explicit in section 3.3:
 
-The assignment specification explicitly refers to reusing the numeric bathroom variable derived by the Assignment 1 pipeline rather than independently inventing a new parsing rule.
+- `bathrooms` is the numeric variable the A1 pipeline derived from
+  `bathrooms_text`, and the specification says to reuse it rather than
+  re-parsing for the correlation task;
+- `price` is described as cleaned per Assignment 1.
+
+Accordingly, this project recomputes numeric bathrooms and cleaned price from
+the original Inside Airbnb A2 download. Amenity parsing/counting and the
+controlled amenity indicators are implemented in the A2 workflow and are not
+claimed to be required A1 reuse. No A1 CSV is used as input.

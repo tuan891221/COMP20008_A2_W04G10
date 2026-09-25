@@ -47,7 +47,7 @@ This is a **3-person group**, so PCA and clustering are not required.
 
 The teaching team clarified that **A2 must use only the original dataset downloaded directly from the Inside Airbnb website**. The cleaned/modified dataset supplied for Assignment 1 must **not** be used for A2.
 
-The team's A1 preprocessing logic can be reused where relevant, but it must be rerun on the original Inside Airbnb data. In particular, A1-derived cleaned price, amenity count, and numeric bathroom logic are kept in `src/a1_reuse.py`.
+This rule prohibits reusing the A1 **dataset**, not every transformation. Section 3.3 of the specification explicitly identifies the numeric `bathrooms` variable derived from `bathrooms_text` by the A1 pipeline and describes `price` as cleaned per Assignment 1. This repository recomputes those variables inside the A2 workflow from the original Inside Airbnb download. Amenity parsing and indicators are A2 implementations and do not depend on an A1 data file.
 
 See `A2_DATA_AMENDMENT.md` and `data/README.md` before adding data.
 
