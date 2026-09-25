@@ -50,3 +50,19 @@ data/split_assignments.csv
 ```
 
 Do not commit unrelated personal files, credentials, or API keys.
+
+
+## Current official snapshot used by this repository
+
+- City: Melbourne, Victoria, Australia
+- Snapshot date: **16 June 2026**
+- File: **Detailed Listings — listings.csv.gz**
+- Direct source: `https://data.insideairbnb.com/australia/vic/melbourne/2026-06-16/data/listings.csv.gz`
+
+Run:
+
+```bash
+python scripts/download_melbourne_data.py
+```
+
+The script downloads directly from Inside Airbnb, decompresses the file to `data/listings.csv`, and writes `data/SOURCE_METADATA.json`.
