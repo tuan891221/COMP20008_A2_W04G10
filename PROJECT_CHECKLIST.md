@@ -3,6 +3,7 @@
 ## Before analysis
 - [ ] Official `listings.csv` placed in `data/`
 - [ ] Dataset/version recorded
+- [ ] Melbourne coordinate/source sanity check passed
 - [ ] RQ copied exactly from the group contract
 - [ ] Eligible cohort rule agreed: Entire home/apt + valid positive nightly price
 
