@@ -100,7 +100,7 @@ Table 4                  Part 2 sections 4-6;
                          correlation_results.csv
 Table 2                  Part 3 sections 5-7;
                          hyperparameter_effects.csv and the CV tables
-Tables 5a and 5b         Part 3 sections 8-9;
+Tables 5a and 5b         Part 3 sections 4, 6 and 11;
                          model_summary.csv and confusion_*.csv
 Figure 2                 Part 3 section 11;
                          model_macro_f1_comparison.png
@@ -111,7 +111,7 @@ Bootstrap intervals      Part 3 section 9;
 Table 6                  Part 4 sections 3-5;
                          feature_selection_top3.csv and
                          feature_selection_rankings.csv
-Figure 3                 Part 4 section 3;
+Figure 3                 Part 3 sections 10-11;
                          permutation_importance_decisiontree.png
 Table 7                  Part 4 section 6;
                          feature_selection_hard_case.csv
