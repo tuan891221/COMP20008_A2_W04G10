@@ -84,6 +84,9 @@ jobs:
             # Another validation workflow may have updated main while this job
             # was running. Rebase the generated-only commit before pushing so
             # concurrent notebook validations do not create a false failure.
+            # The notebooks also write generated files outside this job's
+            # commit scope, so stash them before rebasing.
+            git stash push --include-untracked --message "analysis artifacts" >/dev/null || true
             git pull --rebase origin main
             git push origin HEAD:main
           fi
